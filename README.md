@@ -134,6 +134,57 @@ The instructor will open the next lesson and provide context.
 
 ---
 
+## 🚀 Complete Order Processing Implementation
+
+This repository includes a **fully implemented order processing system** in the `order-processing/` directory that brings together all concepts from Lessons 2-7.
+
+### What's Included:
+
+```
+order-processing/
+├── workflows/          # OrderWorkflow + GreetUser workflow
+├── activities/         # All activity implementations
+├── types/             # Domain types and errors
+├── worker/            # Worker main entry point
+├── starter/           # Workflow starter/client
+├── README.md          # Detailed usage guide
+├── IMPLEMENTATION.md  # Architecture and design details
+└── Makefile          # Convenient commands
+```
+
+### Features Implemented:
+
+- ✅ **Full Order Workflow** with parallel enrichment
+- ✅ **Signal Handlers**: approve-payment, cancel-order, add-line-item
+- ✅ **Query Handlers**: get-status, get-items
+- ✅ **Saga Pattern**: Compensation for failed transactions
+- ✅ **Retry Policies**: Typed errors with smart retries
+- ✅ **Workflow Versioning**: Safe evolution with GetVersion
+- ✅ **Real Activities**: Inventory, Payment, Notifications, etc.
+
+### Quick Start:
+
+```bash
+# 1. Start Temporal (from project root)
+docker-compose up -d
+
+# 2. Start worker
+cd order-processing
+make worker
+
+# 3. Start an order workflow (in another terminal)
+cd order-processing
+make starter
+```
+
+### Learn More:
+
+- 📖 [Order Processing README](order-processing/README.md) - Usage guide and examples
+- 🏗️ [Implementation Details](order-processing/IMPLEMENTATION.md) - Architecture and patterns
+- 📚 [Lesson 7](lesson_7.md) - Full explanation of the order workflow
+
+---
+
 ### What Each Lesson Includes:
 - ✅ **Clear learning objectives** - Know what you'll master
 - 🧠 **"Why before How" explanations** - Understand the reasoning
