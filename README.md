@@ -160,33 +160,9 @@ The `temporal_teacher` mode is a custom AI instructor specifically designed for 
 ### Agent Configuration
 The agent is configured in: `.github/agents/temporal_teacher.agent.md`
 
-**Key Features:**
-- Educational, structured responses
-- Analogies and diagrams for complex concepts
-- Step-by-step tutorials
-- Focus on "why" before "how"
-- Assumes Go + macOS environment
-
----
-
-## 📊 Track Your Progress
-
-Check `course.md` at any time to see:
-- ✅ Completed lessons
-- 📍 Current position
-- 📝 Overview of all available lessons
-- 🎯 Next steps
-
 ---
 
 ## 🆘 Need Help?
-
-### Using Self-Study Mode (Mode 1)?
-- **Review lessons**: All lessons are in the repository, just reopen the file
-- **Check course overview**: See `course.md` for lesson summaries
-- **Look at code examples**: Each lesson has working code you can reference
-
-### Using AI-Guided Mode (Mode 2)?
 
 **Lost Context?**  
 If you feel like the AI is losing track of where you are in the course, simply ask:
