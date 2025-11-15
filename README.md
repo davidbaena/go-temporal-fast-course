@@ -1,4 +1,4 @@
-# 🎓 Temporal Course for Go Developers
+# 🎓 Temporal Fast Course for Go Developers (~4hours)
 
 Welcome to your interactive Temporal learning experience! This course is designed to teach you Temporal workflows, activities, and best practices through hands-on lessons in Go.
 
