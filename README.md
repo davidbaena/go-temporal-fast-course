@@ -95,27 +95,6 @@ The instructor will open the next lesson and provide context.
 
 ---
 
-### 🤝 Hybrid Approach (Recommended!)
-
-**You can mix both modes!** Many learners find this most effective:
-
-1. **Read the lesson first** (Mode 1) to get an overview
-2. **Ask the AI agent questions** (Mode 2) about concepts you don't understand
-3. **Use the agent for code help** when implementing exercises
-4. **Return to the lesson files** for reference while coding
-
-**Example workflow:**
-```
-1. Open lesson_3.md and read about Workers
-2. Confused about task queues? Ask the agent:
-   "Can you explain task queues with a simpler analogy?"
-3. Ready to code? Ask the agent:
-   "Help me implement the worker from Lesson 3"
-4. Need a refresher? Go back to lesson_3.md anytime
-```
-
----
-
 ## 📚 Course Structure
 
 | Lesson | Topic | Duration | Status |
@@ -138,62 +117,6 @@ The instructor will open the next lesson and provide context.
 
 This repository includes a **fully implemented order processing system** in the `order-processing/` directory that brings together all concepts from Lessons 2-7.
 
-### What's Included:
-
-```
-order-processing/
-├── workflows/          # OrderWorkflow + GreetUser workflow
-├── activities/         # All activity implementations
-├── types/             # Domain types and errors
-├── worker/            # Worker main entry point
-├── starter/           # Workflow starter/client
-├── README.md          # Detailed usage guide
-├── IMPLEMENTATION.md  # Architecture and design details
-└── Makefile          # Convenient commands
-```
-
-### Features Implemented:
-
-- ✅ **Full Order Workflow** with parallel enrichment
-- ✅ **Signal Handlers**: approve-payment, cancel-order, add-line-item
-- ✅ **Query Handlers**: get-status, get-items
-- ✅ **Saga Pattern**: Compensation for failed transactions
-- ✅ **Retry Policies**: Typed errors with smart retries
-- ✅ **Workflow Versioning**: Safe evolution with GetVersion
-- ✅ **Real Activities**: Inventory, Payment, Notifications, etc.
-
-### Quick Start:
-
-```bash
-# 1. Start Temporal (from project root)
-docker-compose up -d
-
-# 2. Start worker
-cd order-processing
-make worker
-
-# 3. Start an order workflow (in another terminal)
-cd order-processing
-make starter
-```
-
-### Learn More:
-
-- 📖 [Order Processing README](order-processing/README.md) - Usage guide and examples
-- 🏗️ [Implementation Details](order-processing/IMPLEMENTATION.md) - Architecture and patterns
-- 📚 [Lesson 7](lesson_7.md) - Full explanation of the order workflow
-
----
-
-### What Each Lesson Includes:
-- ✅ **Clear learning objectives** - Know what you'll master
-- 🧠 **"Why before How" explanations** - Understand the reasoning
-- 💻 **Go code examples** - Real, working code with comments
-- 🎯 **Optional exercises** - Practice what you learned
-- 🔗 **Navigation links** - Easy movement between lessons
-
----
-
 ## 🎯 What You'll Build
 
 By the end of this course, you'll have built a **complete order processing workflow** that:
@@ -204,14 +127,15 @@ By the end of this course, you'll have built a **complete order processing workf
 4. **Handles failures gracefully** with compensation logic
 5. **Integrates with your existing backend** (auth, book services)
 
-### Technologies Covered:
-- ✅ Temporal workflows and activities in Go
-- ✅ Workers and task queues
-- ✅ Error handling and retry policies
-- ✅ Signals and queries for workflow interaction
-- ✅ Testing workflows
-- ✅ Docker Compose integration
-- ✅ Local development setup
+### Features Implemented:
+
+- ✅ **Full Order Workflow** with parallel enrichment
+- ✅ **Signal Handlers**: approve-payment, cancel-order, add-line-item
+- ✅ **Query Handlers**: get-status, get-items
+- ✅ **Saga Pattern**: Compensation for failed transactions
+- ✅ **Retry Policies**: Typed errors with smart retries
+- ✅ **Workflow Versioning**: Safe evolution with GetVersion
+- ✅ **Real Activities**: Inventory, Payment, Notifications, etc.
 
 ---
 
@@ -255,17 +179,6 @@ Check `course.md` at any time to see:
 
 ---
 
-## 💡 Tips for Success
-
-1. **Read each lesson thoroughly** - Don't rush through the concepts
-2. **Ask questions** - The AI instructor is here to help clarify anything
-3. **Try the exercises** - Hands-on practice solidifies learning
-4. **Run the code** - See workflows in action with `temporal server start-dev`
-5. **Take breaks** - Complex concepts need time to sink in
-6. **Review previous lessons** - Concepts build on each other
-
----
-
 ## 🆘 Need Help?
 
 ### Using Self-Study Mode (Mode 1)?
@@ -302,43 +215,4 @@ Ask to open any previous lesson:
 ```
 Can you open Lesson 3 again?
 ```
-
 ---
-
-## 🎬 Ready to Begin?
-
-### Choose Your Learning Mode:
-
-**Self-Study (Mode 1):**
-```bash
-# Open the first lesson file
-open lesson_1.md
-```
-
-**AI-Guided (Mode 2):**  
-Open your IDE chat in **temporal_teacher** mode and type:
-```
-Start the course
-```
-
-**Hybrid Approach (Recommended):**  
-Open `lesson_1.md` to read, then ask the agent questions as they come up!
-
-Let's build something amazing with Temporal! 🚀
-
----
-
-## 📝 Prerequisites
-
-Before starting, ensure you have:
-- ✅ Go 1.21+ installed
-- ✅ Docker Desktop running (for Temporal server)
-- ✅ Basic understanding of Go syntax
-- ✅ Familiarity with your `simple-backend` project structure
-
-If you need to set up Temporal locally, the instructor will guide you through it in the lessons.
-
----
-
-**Questions before starting?** Just ask the temporal_teacher agent - it's here to help! 🎓
-
