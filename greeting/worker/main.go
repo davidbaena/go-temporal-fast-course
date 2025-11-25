@@ -38,6 +38,7 @@ func main() {
 	w.RegisterActivity(greetActivities.GetUserDetails)
 	w.RegisterActivity(greetActivities.SendGreeting)
 	w.RegisterActivity(greetActivities.LogGreeting)
+	w.RegisterActivity(greetActivities.GetUserPreferencesId)
 
 	log.Println("Worker starting on task queue:", taskQueue)
 	log.Println("Worker identity:", "order-worker-"+hostname())

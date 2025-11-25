@@ -13,6 +13,10 @@ type UserDetails struct {
 	Email     string
 }
 
+type UserPreferences struct {
+	Language string
+}
+
 type GreetActivities struct {
 }
 
@@ -50,4 +54,15 @@ func (a *GreetActivities) SendGreeting(ctx context.Context, email string, messag
 func (a *GreetActivities) LogGreeting(ctx context.Context, userId string, message string) error {
 	fmt.Printf("Logging greeting to %s: %s\n", userId, message)
 	return nil
+}
+
+func (a *GreetActivities) GetUserPreferencesId(ctx context.Context, userId string) (*UserPreferences, error) {
+
+	if userId == "" {
+		return nil, fmt.Errorf("userId is empty")
+	}
+
+	return &UserPreferences{
+		Language: "ES",
+	}, nil
 }
