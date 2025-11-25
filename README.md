@@ -4,6 +4,58 @@ Welcome to your interactive Temporal learning experience! This course is designe
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+Before starting the course, ensure you have:
+
+1. **Go** (version 1.21 or later)
+   ```bash
+   go version
+   ```
+
+2. **Temporal CLI** - Install using one of these methods:
+
+   **macOS (Homebrew):**
+   ```bash
+   brew install temporal
+   ```
+
+   **macOS/Linux (curl):**
+   ```bash
+   curl -sSf https://temporal.download/cli.sh | sh
+   ```
+
+   **Or download from:** https://github.com/temporalio/cli/releases
+
+3. **Verify installation:**
+   ```bash
+   temporal --version
+   ```
+
+### Starting Temporal Server
+
+The easiest way to start the Temporal development server:
+
+```bash
+# Option 1: Run in a separate terminal (recommended)
+./start-temporal.sh
+
+# Option 2: Run in background
+make start-bg
+
+# Check if running
+make status
+```
+
+The Temporal server will start with:
+- **Temporal Server:** localhost:7233
+- **Temporal UI:** http://localhost:8233
+- **Database:** SQLite (stored in `./temporal.db`)
+
+---
+
 ## 📚 What is This Course?
 
 This is a **progressive, lesson-based course** that teaches you how to build durable, reliable workflows using Temporal. Each lesson builds on the previous one, starting from fundamentals and progressing to advanced topics.

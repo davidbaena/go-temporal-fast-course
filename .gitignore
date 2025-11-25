@@ -34,7 +34,11 @@ Thumbs.db
 
 # Temporal local development
 temporal.db
+temporal.db-shm
+temporal.db-wal
 temporal-ui.db
+temporal.log
+temporal.pid
 
 # Build artifacts
 bin/

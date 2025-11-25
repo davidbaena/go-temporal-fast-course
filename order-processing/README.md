@@ -84,18 +84,23 @@ From the course lessons, this implementation includes:
 
 1. **Start Temporal server** (from project root):
    ```bash
-   docker-compose up -d
+   # Option 1: Run in foreground (in a separate terminal)
+   ./start-temporal.sh
+
+   # Option 2: Run in background
+   make start-bg
    ```
 
 2. **Verify Temporal is running**:
    ```bash
-   docker ps
-   # Should show temporal, postgresql, and temporal-ui containers
+   make status
+   # Or check directly
+   temporal workflow list
    ```
 
 3. **Access Temporal UI**:
    ```
-   http://localhost:8080
+   http://localhost:8233
    ```
 
 ### Running the Order Workflow
@@ -150,42 +155,42 @@ WORKFLOW_TYPE=greet go run starter/main.go
 
 **Approve Payment:**
 ```bash
-docker exec -it temporal-admin-tools tctl workflow signal \
-  -w order-workflow-ORDER-<timestamp> \
-  -n approve-payment \
-  -i '{"ApprovedBy":"admin"}'
+temporal workflow signal \
+  --workflow-id order-workflow-ORDER-<timestamp> \
+  --name approve-payment \
+  --input '{"ApprovedBy":"admin"}'
 ```
 
 **Cancel Order:**
 ```bash
-docker exec -it temporal-admin-tools tctl workflow signal \
-  -w order-workflow-ORDER-<timestamp> \
-  -n cancel-order \
-  -i '{"Reason":"customer requested"}'
+temporal workflow signal \
+  --workflow-id order-workflow-ORDER-<timestamp> \
+  --name cancel-order \
+  --input '{"Reason":"customer requested"}'
 ```
 
 **Add Line Item:**
 ```bash
-docker exec -it temporal-admin-tools tctl workflow signal \
-  -w order-workflow-ORDER-<timestamp> \
-  -n add-line-item \
-  -i '{"SKU":"ITEM-999","Quantity":3}'
+temporal workflow signal \
+  --workflow-id order-workflow-ORDER-<timestamp> \
+  --name add-line-item \
+  --input '{"SKU":"ITEM-999","Quantity":3}'
 ```
 
 ### Using Queries
 
 **Get Order Status:**
 ```bash
-docker exec -it temporal-admin-tools tctl workflow query \
-  -w order-workflow-ORDER-<timestamp> \
-  -qt get-status
+temporal workflow query \
+  --workflow-id order-workflow-ORDER-<timestamp> \
+  --type get-status
 ```
 
 **Get Order Items:**
 ```bash
-docker exec -it temporal-admin-tools tctl workflow query \
-  -w order-workflow-ORDER-<timestamp> \
-  -qt get-items
+temporal workflow query \
+  --workflow-id order-workflow-ORDER-<timestamp> \
+  --type get-items
 ```
 
 ## 🔧 Configuration
@@ -265,10 +270,10 @@ go run starter/main.go
 ASYNC=true go run starter/main.go
 
 # Cancel immediately
-docker exec -it temporal-admin-tools tctl workflow signal \
-  -w order-workflow-ORDER-<id> \
-  -n cancel-order \
-  -i '{"Reason":"test cancellation"}'
+temporal workflow signal \
+  --workflow-id order-workflow-ORDER-<id> \
+  --name cancel-order \
+  --input '{"Reason":"test cancellation"}'
 ```
 
 **Scenario 4: Approval Timeout**
@@ -284,31 +289,34 @@ ASYNC=true go run starter/main.go
 ASYNC=true go run starter/main.go
 
 # Add items before approving
-docker exec -it temporal-admin-tools tctl workflow signal \
-  -w order-workflow-ORDER-<id> \
-  -n add-line-item \
-  -i '{"SKU":"EXTRA-001","Quantity":1}'
+temporal workflow signal \
+  --workflow-id order-workflow-ORDER-<id> \
+  --name add-line-item \
+  --input '{"SKU":"EXTRA-001","Quantity":1}'
 
 # Then approve
-docker exec -it temporal-admin-tools tctl workflow signal \
-  -w order-workflow-ORDER-<id> \
-  -n approve-payment \
-  -i '{"ApprovedBy":"admin"}'
+temporal workflow signal \
+  --workflow-id order-workflow-ORDER-<id> \
+  --name approve-payment \
+  --input '{"ApprovedBy":"admin"}'
 ```
 
 ## 🔍 Observability
 
 ### Viewing Workflow History
 
-1. **Temporal UI**: http://localhost:8080
+1. **Temporal UI**: http://localhost:8233
    - Navigate to Workflows
    - Click on your workflow ID
    - View complete event history
 
-2. **Using tctl**:
+2. **Using Temporal CLI**:
    ```bash
-   docker exec -it temporal-admin-tools tctl workflow show \
-     -w order-workflow-ORDER-<id>
+   temporal workflow show \
+     --workflow-id order-workflow-ORDER-<id>
+
+   # Or use the Makefile shortcut (from project root)
+   make show ID=order-workflow-ORDER-<id>
    ```
 
 ### Logs
@@ -346,11 +354,11 @@ After running this implementation:
 
 **Worker can't connect:**
 ```bash
-# Check Temporal is running
-docker ps | grep temporal
+# Check Temporal is running (from project root)
+make status
 
 # Check connectivity
-docker exec temporal-admin-tools tctl namespace list
+temporal workflow list
 ```
 
 **Workflow stuck in approval:**
@@ -371,4 +379,4 @@ docker exec temporal-admin-tools tctl namespace list
 - Lesson 5: `../lesson_5.md` (Error Handling)
 - Lesson 6: `../lesson_6.md` (Signals & Queries)
 - Lesson 7: `../lesson_7.md` (Order Workflow)
-- Docker setup: `../docker-compose.yml`
+- Temporal startup script: `../start-temporal.sh`

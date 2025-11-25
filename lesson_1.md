@@ -222,17 +222,19 @@ Let's verify your environment is ready:
 go version
 # Should show: go version go1.21.x or higher
 
-# 2. Check Docker
-docker --version
-# Should show: Docker version 20.x or higher
+# 2. Check if Temporal CLI is installed
+temporal --version
+# Should show: temporal version 1.x.x or higher
 
-# 3. Verify docker-compose
-docker-compose --version
-# Should show: docker-compose version 1.x or 2.x
+# 3. If not installed, install it:
+# macOS (Homebrew):
+brew install temporal
+
+# Or download from: https://github.com/temporalio/cli/releases
 
 # 4. Check if Temporal server is already running
-docker ps | grep temporal
-# If nothing shows, we'll start it in Lesson 4
+make status
+# Or check manually: pgrep -f "temporal server start-dev"
 ```
 
 ---

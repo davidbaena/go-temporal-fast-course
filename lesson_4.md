@@ -2,11 +2,11 @@
 
 ## Learning Objectives
 By the end of this lesson you will:
-- ✅ Start a local Temporal stack (PostgreSQL + Temporal + UI) using your existing docker-compose
+- ✅ Start a local Temporal development server using the Temporal CLI
 - ✅ Run a worker and starter to execute `OrderWorkflow`
 - ✅ Inspect workflow execution in the Temporal UI
 - ✅ Retrieve workflow results programmatically
-- ✅ Troubleshoot common local setup issues (DB wait, UI 500, missing task queue)
+- ✅ Troubleshoot common local setup issues
 
 [← Back to Course Index](course.md) | [← Previous: Lesson 3](lesson_3.md) | [Next: Lesson 5 →](lesson_5.md)
 
@@ -22,62 +22,64 @@ Running locally lowers feedback cycle time and builds intuition about workflow s
 
 ---
 ## Stack Overview
-Your `docker-compose.yaml` already defines these services:
-| Service | Purpose | Port |
-|---------|---------|------|
-| `postgresql` | Temporal persistence store | 5432 |
-| `temporal` | Temporal server (frontend + matching + history) | 7233 |
-| `temporal-admin-tools` | CLI utilities container (tctl) | - |
-| `temporal-ui` | Web UI to inspect workflows | 8080 |
+We'll use the Temporal CLI to run a local development server:
+| Component | Purpose | Port |
+|-----------|---------|------|
+| `temporal server` | Temporal server (all services in one) | 7233 |
+| `temporal ui` | Web UI to inspect workflows | 8233 |
+| `sqlite` | Local persistence (temporal.db file) | - |
 
-Image versions in compose:
-- Server: `temporalio/auto-setup:1.29.1` (auto-creates schema)
-- UI: `temporalio/ui:latest`
+The Temporal CLI provides:
+- All-in-one development server
+- Built-in Web UI
+- SQLite database for persistence (no PostgreSQL needed)
+- Zero configuration required
 
 ---
 ## Start the Stack
 Open a terminal at project root and run:
 ```bash
-# Start everything (detached)
-docker-compose up -d
+# Option 1: Run in foreground (recommended for first time)
+./start-temporal.sh
 
-# Check container status
-docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+# Option 2: Run in background
+make start-bg
 
-# Tail Temporal server logs (optional for debugging)
-docker logs -f temporal | head -n 50
+# Option 3: Use temporal CLI directly
+temporal server start-dev --db-filename ./temporal.db
 ```
-**Expected:** Temporal logs should show successful schema setup and readiness.
 
----
-## Common Startup Issue: "Waiting for PostgreSQL to startup"
-If Temporal logs repeatedly show that message:
-1. Verify Postgres healthy:
-    ```bash
-    docker logs temporal-postgresql | head -n 40
-    ```
-2. Ensure Postgres volume is writable (your compose has `- /var/lib/postgresql/data` without a host path → it's an anonymous volume, which is fine). If permission issues arise, try:
-    ```bash
-    docker-compose down -v
-    docker-compose up -d
-    ```
-3. Confirm env var `DB=postgres12` matches image capabilities. Using Postgres 15 + `DB=postgres12` is acceptable; Temporal uses compatibility mode. If failure persists, set `DB=postgres` instead:
-    ```yaml
-    environment:
-      - DB=postgres
-    ```
-4. Network name is defined; verify container can resolve host:
-    ```bash
-    docker exec temporal ping -c1 postgresql
-    ```
+**Expected output:**
+```
+CLI 1.2.0 (Server 1.29.0, UI 2.37.0)
+
+Server:  localhost:7233
+UI:      http://localhost:8233
+Metrics: http://localhost:55477/metrics
+```
 
 ---
 ## Verify Temporal Connectivity
-Run a quick `tctl` command from admin tools:
+Check if the server is running:
 ```bash
-docker exec -it temporal-admin-tools tctl namespace list
+# Using make
+make status
+
+# Or using temporal CLI
+temporal workflow list
+
+# Or check the process
+pgrep -f "temporal server start-dev"
 ```
-You should see the default namespace (often `default`). If not, auto-setup may have failed—check Temporal logs.
+
+You can also open the Web UI in your browser:
+```bash
+# Using make
+make ui
+
+# Or open directly
+open http://localhost:8233
+```
 
 ---
 ## Run the Worker
@@ -109,10 +111,15 @@ Modify `order_workflow.go` to include a `RetryPolicy` in ActivityOptions (see Le
 
 ---
 ## Inspect Workflow in UI
-Open:
+Open the Temporal Web UI:
+```bash
+# Using make
+make ui
+
+# Or open directly in browser
+open http://localhost:8233
 ```
-http://localhost:8080
-```
+
 Navigate to:
 - Workflows list → Find WorkflowID `order_workflow_12345`
 - Open execution → Review event history:
@@ -120,21 +127,10 @@ Navigate to:
   - `ActivityTaskScheduled` / `ActivityTaskCompleted` for each step
   - `WorkflowExecutionCompleted`
 
-**If UI shows 500:**
-1. Refresh browser or clear cache
-2. Confirm UI container logs:
-    ```bash
-    docker logs temporal-ui | head -n 80
-    ```
-3. Ensure `TEMPORAL_ADDRESS=temporal:7233` matches service name and port
-4. Verify Temporal service is reachable from UI container:
-    ```bash
-    docker exec temporal-ui nc -z temporal 7233 || echo 'Cannot reach server'
-    ```
-5. If image compatibility issues persist, pin a specific UI version:
-    ```yaml
-    image: temporalio/ui:2.14.0
-    ```
+**If UI doesn't load:**
+1. Check if Temporal server is running: `make status`
+2. Verify the server started successfully: `tail temporal.log`
+3. Restart the server: `make restart`
 
 ---
 ## Programmatically Retrieve Workflow Result Later
@@ -157,11 +153,11 @@ This enables asynchronous processing and decouples API responses from workflow c
 | Symptom | Cause | Fix |
 |---------|-------|-----|
 | Workflow never runs | Wrong task queue name | Ensure starter + worker use identical string |
-| Starter fatal: cannot connect | Temporal not healthy | Check `docker ps`, server logs |
-| UI 500 errors | UI can't reach server | Check env, pin version, test connectivity |
+| Starter fatal: cannot connect | Temporal not running | Check `make status`, run `make start-bg` |
+| UI doesn't load | Server not started | Check logs: `tail temporal.log` or `make logs` |
 | Payment step fails randomly | No retries | Add ActivityOptions RetryPolicy |
-| Long startup wait | Postgres not ready | Recreate volumes, validate DB env vars |
-| "namespace not found" | Auto-setup failed | Re-run docker-compose, check auto-setup logs |
+| "namespace not found" | Server not fully started | Wait a few seconds, retry |
+| Connection refused | Wrong port | Ensure using localhost:7233 for server, :8233 for UI |
 
 ---
 ## Exercise
@@ -176,28 +172,44 @@ This enables asynchronous processing and decouples API responses from workflow c
 4. Capture event history (export JSON from UI) and identify the sequence.
 
 ---
-## Advanced: Using `tctl` CLI
+## Advanced: Using the Temporal CLI
 List workflows:
 ```bash
-docker exec -it temporal-admin-tools tctl workflow list
+temporal workflow list
+
+# Or use make
+make list
 ```
 Describe a workflow:
 ```bash
-docker exec -it temporal-admin-tools tctl workflow describe -w order_workflow_12345
+temporal workflow describe --workflow-id order_workflow_12345
+
+# Or use make
+make describe ID=order_workflow_12345
+```
+Show workflow history:
+```bash
+temporal workflow show --workflow-id order_workflow_12345
+
+# Or use make
+make show ID=order_workflow_12345
 ```
 Terminate a workflow:
 ```bash
-docker exec -it temporal-admin-tools tctl workflow terminate -w order_workflow_12345 --reason "Testing termination"
+temporal workflow terminate --workflow-id order_workflow_12345 --reason "Testing termination"
+
+# Or use make
+make terminate ID=order_workflow_12345
 ```
 
 ---
 ## What You've Learned
-✅ How to start Temporal locally with docker-compose  
-✅ How workers and starters interact with the server  
-✅ How to inspect workflow history in UI  
-✅ How to retrieve results asynchronously  
-✅ How to troubleshoot common environment issues  
-✅ How to use `tctl` for inspection and management  
+✅ How to start Temporal locally with the Temporal CLI
+✅ How workers and starters interact with the server
+✅ How to inspect workflow history in UI
+✅ How to retrieve results asynchronously
+✅ How to troubleshoot common environment issues
+✅ How to use the Temporal CLI for workflow management  
 
 ---
 ## Ready for Lesson 5?
