@@ -152,6 +152,8 @@ If step 3 fails after step 1 & 2 succeeded, you might:
 - Refund payment
 - Release stock
 
+**Note:** This lesson introduces basic compensation concepts. For a comprehensive deep dive into the Saga pattern, complex compensation scenarios, and real-world examples, see [Lesson 10: Compensation & Saga Patterns Deep Dive](lesson_10.md).
+
 Saga in workflow:
 ```go
 var reserved bool
