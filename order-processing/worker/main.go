@@ -33,7 +33,6 @@ func main() {
 
 	// Register workflows
 	w.RegisterWorkflow(workflows.OrderWorkflow)
-	w.RegisterWorkflow(workflows.GreetUser)
 
 	// Register activities
 	// Inventory activities
@@ -63,13 +62,6 @@ func main() {
 	notificationActivities := &activities.NotificationActivities{}
 	w.RegisterActivity(notificationActivities.SendOrderConfirmation)
 	w.RegisterActivity(notificationActivities.SendCancellationEmail)
-
-	// Greet activities (for simple example)
-	greetActivities := &activities.GreetActivities{}
-	w.RegisterActivity(greetActivities.GetUserDetails)
-	w.RegisterActivity(greetActivities.GetUserPreferences)
-	w.RegisterActivity(greetActivities.SendGreeting)
-	w.RegisterActivity(greetActivities.LogGreeting)
 
 	log.Println("Worker starting on task queue:", taskQueue)
 	log.Println("Worker identity:", "order-worker-"+hostname())

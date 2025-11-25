@@ -17,10 +17,6 @@ starter-async: ## Start an order workflow asynchronously (manual approval requir
 	@echo "Starting order workflow (async - send signals manually)..."
 	ASYNC=true go run starter/main.go
 
-greet: ## Start a greet workflow
-	@echo "Starting greet workflow..."
-	WORKFLOW_TYPE=greet go run starter/main.go
-
 test: ## Run tests (placeholder)
 	@echo "Running tests..."
 	go test -v ./...
