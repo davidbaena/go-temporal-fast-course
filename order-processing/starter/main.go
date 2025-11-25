@@ -30,50 +30,11 @@ func main() {
 	workflowType := getEnv("WORKFLOW_TYPE", "order")
 
 	switch workflowType {
-	case "greet":
-		runGreetWorkflow(c, taskQueue)
 	case "order":
 		runOrderWorkflow(c, taskQueue)
 	default:
 		log.Fatalf("Unknown workflow type: %s (use 'greet' or 'order')", workflowType)
 	}
-}
-
-func runGreetWorkflow(c client.Client, taskQueue string) {
-	// Generate workflow ID
-	workflowID := fmt.Sprintf("greet-workflow-%d", time.Now().Unix())
-
-	// Prepare workflow input
-	input := workflows.GreetUserInput{
-		UserID: getEnv("USER_ID", "user-123"),
-	}
-
-	// Configure workflow options
-	workflowOptions := client.StartWorkflowOptions{
-		ID:        workflowID,
-		TaskQueue: taskQueue,
-	}
-
-	log.Printf("Starting GreetUser workflow: %s\n", workflowID)
-
-	// Start workflow
-	we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, workflows.GreetUser, input)
-	if err != nil {
-		log.Fatalln("Unable to start workflow", err)
-	}
-
-	log.Printf("Started workflow - WorkflowID: %s, RunID: %s\n", we.GetID(), we.GetRunID())
-
-	// Wait for workflow result
-	var result workflows.GreetUserResult
-	err = we.Get(context.Background(), &result)
-	if err != nil {
-		log.Fatalln("Workflow execution failed", err)
-	}
-
-	log.Printf("✅ Workflow completed successfully!\n")
-	log.Printf("Message: %s\n", result.Message)
-	log.Printf("Sent at: %s\n", result.SentAt)
 }
 
 func runOrderWorkflow(c client.Client, taskQueue string) {

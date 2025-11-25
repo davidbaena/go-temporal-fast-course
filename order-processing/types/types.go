@@ -40,16 +40,3 @@ type PaymentApproval struct {
 type CancelRequest struct {
 	Reason string
 }
-
-// UserDetails represents user information
-type UserDetails struct {
-	UserID    string
-	FirstName string
-	LastName  string
-	Email     string
-}
-
-// UserPreferences represents user preferences
-type UserPreferences struct {
-	Language string
-}
