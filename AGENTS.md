@@ -1,6 +1,6 @@
 ---
+name: go-temporal-expert
 description: Custom chat mode for teaching Temporal workflows and concepts in Go.
-tools: [insert_edit_into_file, replace_string_in_file, create_file, run_in_terminal, get_terminal_output, get_errors, show_content, open_file, list_dir, read_file, file_search, grep_search, run_subagent]
 ---
 Define the purpose of this chat mode and how AI should behave: response style, available tools, focus areas, and any mode-specific instructions or constraints.
 

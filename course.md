@@ -17,6 +17,9 @@ Write, run, and interact with workflows
 ### **Part 3: Real-World Application** (Lessons 7-9)
 Implement order processing and deploy to production
 
+### **Part 4: Advanced Patterns** (Lesson 10)
+Deep dive into compensation and saga patterns
+
 ---
 
 ## 📚 Lessons
@@ -146,7 +149,7 @@ Implement order processing and deploy to production
 ---
 
 ### [**Lesson 9: Production Deployment**](lesson_9.md) ✅
-**Duration:** ~30 minutes  
+**Duration:** ~30 minutes
 **Topics:**
 - Deploying Temporal to Kubernetes
 - Worker deployment patterns
@@ -158,6 +161,25 @@ Implement order processing and deploy to production
 - Deploy workers alongside your Go API
 - Configure production-ready Temporal cluster
 - Monitor workflow health
+
+---
+
+### [**Lesson 10: Compensation & Saga Patterns Deep Dive**](lesson_10.md) ✅
+**Duration:** ~40 minutes
+**Topics:**
+- Saga pattern for distributed transactions
+- Forward vs backward recovery strategies
+- Designing compensatable workflows
+- Idempotent compensation activities
+- Parallel compensations and nested sagas
+- Real-world examples (travel booking, bank transfers)
+- Testing and monitoring sagas
+
+**What you'll build:**
+- Complex multi-step compensatable workflows
+- Travel booking saga with full rollback
+- Bank transfer saga with idempotent operations
+- Comprehensive compensation testing
 
 ---
 
@@ -232,6 +254,7 @@ Track your progress as you complete each lesson:
 - [ ] Lesson 7: Order Processing Workflow
 - [ ] Lesson 8: Testing & Best Practices
 - [ ] Lesson 9: Production Deployment
+- [ ] Lesson 10: Compensation & Saga Patterns (Advanced)
 
 ---
 

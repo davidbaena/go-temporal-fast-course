@@ -313,17 +313,21 @@ Fill this out during staging rollout.
 ✅ Operational runbook & readiness checklist  
 
 ---
-## Course Wrap-Up
-You now have end-to-end knowledge:
-1. Fundamentals → Workflows & Activities
-2. Workers, Execution, Local Environment
-3. Resilience (Retries, Compensation)
-4. Interactivity (Signals & Queries)
-5. Integration & Versioning
-6. Testing & Determinism
-7. Production Deployment & Operations
+## What's Next?
 
-Next Steps:
+You've completed the core Temporal course covering fundamentals through production deployment!
+
+**Optional Advanced Topic:**
+If you want to dive deeper into compensation patterns and the Saga pattern, continue to:
+👉 **[Lesson 10: Compensation & Saga Patterns Deep Dive](lesson_10.md)**
+
+This advanced lesson covers:
+- Saga pattern for distributed transactions
+- Complex compensation scenarios
+- Real-world examples (travel booking, bank transfers)
+- Testing and monitoring sagas
+
+**Or, start building:**
 - Implement missing production items (TLS, metrics, runbook)
 - Add real domain activities (payment API, stock DB)
 - Automate CI replay tests
@@ -331,5 +335,5 @@ Next Steps:
 
 If you need a compressed summary, ask: "Save progress to temporal/compressed.md".
 
-[← Back to Course Index](course.md) | [← Previous: Lesson 8](lesson_8.md)
+[← Back to Course Index](course.md) | [← Previous: Lesson 8](lesson_8.md) | [Next: Lesson 10 (Advanced) →](lesson_10.md)
 
